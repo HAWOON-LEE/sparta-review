@@ -54,9 +54,47 @@
         }
     </style>
     <script>
-        function hey(){
+        $(document).ready(function () {
+            $('#card-box').empty();
+            listing();
+        });
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "http://spartacodingclub.shop/post",
+                data: {},
+                success: function (response) {
+                    let rows = response['articles']
+                    for (let i = 0; i < rows.length; i++) {
+                        let title = rows[i]['title'];
+                        let desc = rows[i]['desc'];
+                        let image = rows[i]['image'];
+                        let comment = rows[i]['comment'];
+                        let url = rows[i]['url'];
+
+                        let temp_html = `<div class="card">
+                                            <img className="card-img-top"
+                                             src="${image}"
+                                             alt="Card image cap">
+                                             <div className="card-body">
+                                                <a href="${url}" className="card-title">${title}</a>
+                                                <p className="card-text">${desc}</p>
+                                                <p className="comment">${comment}</p>
+                                            </div>
+                                          </div>`
+
+                        $('#card-box').append(temp_html);
+
+                    }
+                }
+            })
+        }
+
+
+        function hey() {
             let status = $("#post-box").css('display');
-            if(status == 'block') {
+            if (status == 'block') {
                 $("#post-box").hide();
                 $("#post-btn").text('포스팅박스 열기');
             } else {
